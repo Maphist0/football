@@ -103,8 +103,8 @@ void ElizaController::RequestCommand(PlayerCommandQueue &commandQueue) {
   }
 
 
-  // stand still
-  else if (!match->IsInPlay() || lazyPlayer) { // this whole if/then/else structure is ugly and unclear
+  // stand still if lazy (except goalkeeper)
+  else if (!match->IsInPlay() || (lazyPlayer && CastPlayer()->GetFormationEntry().role != e_PlayerRole_GK)) { // this whole if/then/else structure is ugly and unclear
 
     PlayerCommand command;
     command.desiredFunctionType = e_FunctionType_Movement;
@@ -432,9 +432,54 @@ void ElizaController::RequestCommand(PlayerCommandQueue &commandQueue) {
     command.desiredVelocityFloat = manualMovementVelocityFloat;
     command.useDesiredLookAt = true;
     command.desiredLookAt = player->GetPosition() + (_mentalImage->GetBallPrediction(40).Get2D() - player->GetPosition()).GetNormalized(0) * 10.0f;
+
+    // printf("Player %d position: %f %f %f\n", player->GetID(), player->GetPosition().coords[0], player->GetPosition().coords[1], player->GetPosition().coords[2]);
+    // printf("Original command desired direction: %f %f %f\n", command.desiredDirection.coords[0],
+      // command.desiredDirection.coords[1], command.desiredDirection.coords[2]);
+    if (lazyPlayer && CastPlayer()->GetFormationEntry().role == e_PlayerRole_GK) {
+      if (player->GetPosition().coords[1] > 9.10f && command.desiredDirection.coords[1] > 0) {
+        command.desiredDirection.coords[1] *= -0.3f;
+      }
+      if (player->GetPosition().coords[1] < -9.10f && command.desiredDirection.coords[1] < 0) {
+        command.desiredDirection.coords[1] *= -0.3f;
+      }
+      if (player->GetPosition().coords[0] * -team->GetSide() > -pitchHalfW + 5.4f &&
+          command.desiredDirection.coords[0] * -team->GetSide() > 0) {
+        command.desiredDirection.coords[0] *= -0.3f;
+      }
+      if (player->GetPosition().coords[0] * -team->GetSide() < -pitchHalfW - 0.1f &&
+          command.desiredDirection.coords[0] * -team->GetSide() < 0) {
+        command.desiredDirection.coords[0] *= -0.3f;
+      }
+      // printf("new command desired direction: %f %f %f\n", command.desiredDirection.coords[0],
+        // command.desiredDirection.coords[1], command.desiredDirection.coords[2]);
+    }
     commandQueue.push_back(command);
 
   }
+
+  // printf("Request command output command queue: ", commandQueue.size());
+  // std::vector<std::string> funcs;
+  // funcs.push_back("movement");
+  // funcs.push_back("ballcontrol");
+  // funcs.push_back("shortpass");
+  // funcs.push_back("longpass");
+  // funcs.push_back("highpass");
+  // funcs.push_back("shot");
+  // funcs.push_back("deflect");
+  // funcs.push_back("catch");
+  // funcs.push_back("interfere");
+  // funcs.push_back("trip");
+  // funcs.push_back("sliding");
+  // funcs.push_back("special");
+  // for (int i = 0; i < commandQueue.size(); ++i) {
+  //   for (int j = 0; j < funcs.size(); ++j) {
+  //     if (StringToFunctionType(funcs[j]) == commandQueue[i].desiredFunctionType) {
+  //       printf("%s ", funcs[j].c_str());
+  //     }
+  //   }
+  // }
+  // printf("\n");
 }
 
 void ElizaController::Process() {

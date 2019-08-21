@@ -1,0 +1,10 @@
+*.so
+*.a
+*.cmake
+*.pyc
+.vscode
+build
+gfootball.egg-info
+third_party/gfootball_engine/CMakeFiles
+third_party/gfootball_engine/CMakeCache.txt
+third_party/gfootball_engine/Makefile

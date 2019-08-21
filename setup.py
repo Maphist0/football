@@ -30,6 +30,7 @@ class CustomBuild(build_ext):
   """Custom installation script to build the C++ environment."""
   def run(self):
     dest_dir = os.path.join(self.build_lib, 'gfootball_engine')
+    # if os.system('gfootball/build_game_engine.sh'):
     if (os.system('gfootball/build_game_engine.sh') or
         os.system('cp -r third_party/fonts ' + dest_dir) or
         os.system("cp third_party/gfootball_engine/_gameplayfootball.so " + dest_dir)):
