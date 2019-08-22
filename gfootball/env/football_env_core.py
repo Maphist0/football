@@ -264,6 +264,23 @@ class FootballEnvCore(object):
     result['ball_owned_team'] = info.ball_owned_team
     result['ball_owned_player'] = info.ball_owned_player
     result['steps_left'] = self._config['game_duration'] - self._step
+    result['relative_position'] = {}
+    for i in range(len(info.object_position_frame)):
+      pos = np.array([info.object_position_frame[i][0], 
+                      info.object_position_frame[i][1]]).astype(int)
+      if i == 0:
+        result['relative_position']['right_goal'] = pos
+      elif i == 1:
+        result['relative_position']['left_goal'] = pos
+      else:
+        result['relative_position'][f'human_{i-2}'] = pos
+      # if not (0 <= pos[0] <= 1280 and 0 <= pos[1] <= 720):
+        # continue
+      # print(f'Object {i} has position {pos}')
+      # frame[pos[1]-10:min(pos[1]+10, 720), pos[0]-10:min(pos[0]+10, 1280), :] = 255
+    # cv2.imwrite('/home/SENSETIME/zhangzongpu/Documents/Projects/football/{}.jpg'.format(int(time.time())), frame)
+
+    # print(info.object_position_frame[0].)
     self._observation = result
     self._info = info
     return info.is_in_play

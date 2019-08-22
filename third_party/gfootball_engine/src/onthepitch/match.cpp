@@ -658,6 +658,21 @@ void Match::GetState(SharedInfo *state) {
   state->right_controllers.clear();
   state->right_controllers.resize(GetScenarioConfig().right_team.size());
 
+  // Get the right goal's relative position
+  Vector3 rightGoalPos2D = GetProjectedCoord(Vector3(pitchHalfW, 0.0f, goalHeight), GetCamera());
+  int x, y, w, h;
+  menuTask->GetWindowManager()->GetCoordinates(rightGoalPos2D.coords[0], 
+      rightGoalPos2D.coords[1], 0, 0, x, y, w, h);
+  Position rightGoalP ((float) x*X_FIELD_SCALE, (float) y*Y_FIELD_SCALE, 0, false);
+  state->object_position_frame.push_back(rightGoalP);
+
+  // Get the left goal's relative position
+  Vector3 leftGoalPos2D = GetProjectedCoord(Vector3(-pitchHalfW, 0.0f, goalHeight), GetCamera());
+  menuTask->GetWindowManager()->GetCoordinates(leftGoalPos2D.coords[0], 
+      leftGoalPos2D.coords[1], 0, 0, x, y, w, h);
+  Position leftGoalP ((float) x*X_FIELD_SCALE, (float) y*Y_FIELD_SCALE, 0, false);
+  state->object_position_frame.push_back(leftGoalP);
+
   std::map<IHIDevice*, int> controller_mapping;
   {
     auto controllers = GetControllers();
@@ -702,6 +717,14 @@ void Match::GetState(SharedInfo *state) {
         }
         team.push_back(info);
       }
+      // Fetch and save player's relative position
+      Vector3 playerPosition = player->GetGeomPosition();
+      // printf("position %f %f\n", playerPosition.coords[0], playerPosition.coords[1]);
+      Vector3 Pos2D = GetProjectedCoord(playerPosition + Vector3(0, 0.5f, 0.6f), GetCamera());
+      // int x, y, w, h;
+      menuTask->GetWindowManager()->GetCoordinates(Pos2D.coords[0], Pos2D.coords[1], 0, 0, x, y, w, h);
+      Position p ((float) x*X_FIELD_SCALE, (float) y*Y_FIELD_SCALE, 0, false);
+      state->object_position_frame.push_back(p);
     }
   }
 }

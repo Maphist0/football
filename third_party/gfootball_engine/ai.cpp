@@ -310,6 +310,9 @@ BOOST_PYTHON_MODULE(_gameplayfootball) {
   class_<Position>("Position")
       .def("__getitem__", &Position::env_coord)
       .def("__str__", &Position::debug);
+  
+  class_<std::vector<Position> >("PositionVec")
+      .def(vector_indexing_suite<std::vector<Position> >());
 
   class_<PlayerInfo>("PlayerInfo")
       .def_readonly("position", &PlayerInfo::player_position)
@@ -322,8 +325,8 @@ BOOST_PYTHON_MODULE(_gameplayfootball) {
   class_<ControllerInfo>("ControllerInfo", init<int>())
       .add_property("controlled_player", &ControllerInfo::controlled_player);
 
-  class_<std::vector<ControllerInfo> >("ControllerInfoVec").def(
-      vector_indexing_suite<std::vector<ControllerInfo> >());
+  class_<std::vector<ControllerInfo> >("ControllerInfoVec")
+      .def(vector_indexing_suite<std::vector<ControllerInfo> >());
 
   class_<SharedInfo>("SharedInfo")
       .def_readonly("ball_position", &SharedInfo::ball_position)
@@ -339,7 +342,8 @@ BOOST_PYTHON_MODULE(_gameplayfootball) {
       .def_readonly("ball_owned_player", &SharedInfo::ball_owned_player)
       .add_property("left_controllers", &SharedInfo::left_controllers)
       .add_property("right_controllers", &SharedInfo::right_controllers)
-      .def_readonly("game_mode", &SharedInfo::game_mode);
+      .def_readonly("game_mode", &SharedInfo::game_mode)
+      .def_readonly("object_position_frame", &SharedInfo::object_position_frame);
 
   class_<GameEnv>("GameEnv")
       .def("start_game", &GameEnv::start_game)

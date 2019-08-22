@@ -156,7 +156,7 @@ struct ControllerInfo {
   }
   int controlled_player = -1;
 };
-
+ 
 // All the information about the current state (available from python).
 struct SharedInfo {
   Position ball_position;
@@ -172,6 +172,7 @@ struct SharedInfo {
   int ball_owned_team = 0;
   int ball_owned_player = 0;
   bool done = false;
+  std::vector<Position> object_position_frame;
 };
 
 namespace blunted {

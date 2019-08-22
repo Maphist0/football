@@ -2,6 +2,7 @@
 *.a
 *.cmake
 *.pyc
+*.jpg
 .vscode
 build
 gfootball.egg-info
