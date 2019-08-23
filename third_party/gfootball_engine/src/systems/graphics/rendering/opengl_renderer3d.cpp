@@ -336,7 +336,7 @@ OpenGLRenderer3D::OpenGLRenderer3D() : context(0) {
 
   // init & exit
 
-  bool OpenGLRenderer3D::CreateContext(int width, int height, int bpp, bool fullscreen) {
+  bool OpenGLRenderer3D::CreateContext(int width, int height, int bpp, bool fullscreen, bool headless) {
     this->context_width = width;
     this->context_height = height;
     this->context_bpp = bpp;
@@ -380,7 +380,7 @@ OpenGLRenderer3D::OpenGLRenderer3D() : context(0) {
                                SDL_WINDOWPOS_UNDEFINED,
                                SDL_WINDOWPOS_UNDEFINED,
                                width, height,
-                               SDL_WINDOW_OPENGL/* | SDL_RESIZABLE*/ | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0));
+                               SDL_WINDOW_OPENGL/* | SDL_RESIZABLE*/ | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0) | (headless ? SDL_WINDOW_HIDDEN : 0));
     context = SDL_GL_CreateContext(window);
 
 

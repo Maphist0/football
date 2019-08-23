@@ -46,7 +46,8 @@ def main(_):
       'dump_full_episodes': True,
       'players': players,
       'real_time': FLAGS.real_time,
-      'render': True
+      'render': True,
+      'headless': True,
   })
   if FLAGS.level:
     cfg['level'] = FLAGS.level

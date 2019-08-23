@@ -112,6 +112,7 @@ class Config(object):
         'physics_steps_per_frame': 10,
         'real_time': False,
         'render': False,
+        'headless': False,
         'tracesdir': '/tmp/dumps',
         'write_video': False
     }
@@ -162,8 +163,13 @@ class Config(object):
 
   def GameConfig(self):
     cfg = libgame.GameConfig()
-    cfg.render_mode = libgame.e_RenderingMode.e_Onscreen if self[
-        'render'] else libgame.e_RenderingMode.e_Disabled
+    if self['render']:
+      if self['headless']:
+        cfg.render_mode = libgame.e_RenderingMode.e_Offscreen
+      else:
+        cfg.render_mode = libgame.e_RenderingMode.e_Onscreen
+    else:
+      cfg.render_mode = libgame.e_RenderingMode.e_Disabled
     cfg.high_quality = self['render']
     cfg.physics_steps_per_frame = self['physics_steps_per_frame']
     return cfg

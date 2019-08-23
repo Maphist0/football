@@ -44,8 +44,9 @@ namespace blunted {
     height = config.GetInt("context_y", 720);
     bpp = config.GetInt("context_bpp", 32);
     bool fullscreen = config.GetBool("context_fullscreen", false);
+    bool headless = config.Get("graphics3d_renderer_headless").compare("true") == 0;
 
-    if (!static_cast<Renderer3D*>(renderer3DTask)->CreateContext(width, height, bpp, fullscreen)) {
+    if (!static_cast<Renderer3D*>(renderer3DTask)->CreateContext(width, height, bpp, fullscreen, headless)) {
       Log(e_FatalError, "GraphicsSystem", "Initialize", "Could not create context");
     }
 

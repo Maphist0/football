@@ -112,8 +112,9 @@ std::string GameEnv::start_game(GameConfig game_config) {
   if (game_config.render_mode == e_Disabled) {
     config->Set("graphics3d_renderer", "mock");
   } else if (game_config.render_mode == e_Offscreen) {
-    setenv("DISPLAY", ":63", 1);
-    config->Set("graphics3d_renderer", "egl");
+    // setenv("DISPLAY", ":63", 1);
+    // config->Set("graphics3d_renderer", "egl");
+    config->Set("graphics3d_renderer_headless", "true");
   }
   run_game(config);
   game_ = GetGameTask().get();

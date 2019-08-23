@@ -47,7 +47,7 @@ namespace blunted {
       // --- new & improved
 
       // init & exit
-      virtual bool CreateContext(int width, int height, int bpp, bool fullscreen);
+      virtual bool CreateContext(int width, int height, int bpp, bool fullscreen, bool headless = false);
       virtual void Exit();
 
       virtual int CreateView(float x_percent, float y_percent, float width_percent, float height_percent);

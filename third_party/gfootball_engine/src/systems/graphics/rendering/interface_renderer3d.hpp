@@ -233,7 +233,7 @@ namespace blunted {
       // --- new & improved
 
       // init & exit
-      virtual bool CreateContext(int width, int height, int bpp, bool fullscreen) = 0;
+      virtual bool CreateContext(int width, int height, int bpp, bool fullscreen, bool headless = false) = 0;
       virtual void Exit() = 0;
 
       virtual int CreateView(float x_percent, float y_percent, float width_percent, float height_percent) = 0;
@@ -322,7 +322,7 @@ namespace blunted {
       std::vector<View> views;
 
   };
-
+ 
   class MockRenderer3D: public Renderer3D {
    public:
     MockRenderer3D() {
@@ -348,7 +348,7 @@ namespace blunted {
       // --- new & improved
 
       // init & exit
-    virtual bool CreateContext(int width, int height, int bpp, bool fullscreen) { return true;};
+    virtual bool CreateContext(int width, int height, int bpp, bool fullscreen, bool headless = false) { return true;};
     virtual void Exit() {};
 
     virtual int CreateView(float x_percent, float y_percent, float width_percent, float height_percent) {
